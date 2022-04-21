@@ -6,50 +6,50 @@ kaboom({
 });
 
 // Load assets
-loadSpriteAtlas("https://raw.githubusercontent.com/vBentzen/fluffy-breakerGameKaboom/main/sprites/breakout_pieces.png", {
-    "blocka": {
-        x: 8,
-        y: 8,
+loadSpriteAtlas("https://raw.githubusercontent.com/vBentzen/super-invaderKaboomJS/main/sprites/ship.png", {
+    "ship": {
+        x: 10,
+        y: 7,
         width: 32,
-        height: 16,
-    },
-    "blockb": {
-        x: 8,
-        y: 28,
-        width: 32,
-        height: 16,
-    },
-    "blockc": {
-        x: 8,
-        y: 48,
-        width: 32,
-        height: 16,
-    },
-    "blockd": {
-        x: 8,
-        y: 68,
-        width: 32,
-        height: 16,
-    },
-    "paddle": {
-        x: 76,
-        y: 152,
-        width: 64,
-        height: 16,
-    },
-    "ball": {
-        x: 66,
-        y: 136,
-        width: 8,
-        height: 8,
-    },
-    "heart": {
-        x: 120,
-        y: 136,
-        width: 10,
-        height: 9,
+        height: 24,
     }
-});
+} )
+
+loadSpriteAtlas("https://raw.githubusercontent.com/vBentzen/super-invaderKaboomJS/main/sprites/beams.png", {
+    "bulleta": {
+        x: 6,
+        y: 155,
+        width: 13,
+        height: 17,
+    },
+    "bulletb": {
+        x: 7,
+        y:39,
+        width: 13,
+        height:17,
+    },
+})
+//load monsters
+loadSpriteAtlas("https://raw.githubusercontent.com/vBentzen/super-invaderKaboomJS/main/sprites/enemies3-sheet-alpha.png", {
+    "monstera": {
+        x: 73,
+        y: 474,
+        width: 15,
+        height: 15,
+    },
+    "monsterb": {
+        x: 73,
+        y: 490,
+        width: 15,
+        height: 15,
+    },
+    "monsterc": {
+        x: 60,
+        y: 392,
+        width: 20,
+        height: 19,
+    },
+})
 
 // Load pwerup assets
 loadSpriteAtlas("https://raw.githubusercontent.com/vBentzen/fluffy-breakerGameKaboom/main/sprites/breakout_custom.png", {
@@ -67,12 +67,10 @@ loadFont("breakout", "https://raw.githubusercontent.com/vBentzen/fluffy-breakerG
 const LEVELS = [
     [
         "                        ",
-        "                        ",
-        "dddddddddddddddddddddddd",
-        "cccccccccccccccccccccccc",
-        "bbbbbbbbbbbbbbbbbbbbbbbb",
-        "ba                      ",
-        "                        ",
+        "     cccccccccccc       ",
+        "     bbbbbbbbbbbbbbbbbb ",
+        "  aaaaaaaaaaaaaaaaaaaaa ",
+        "  aaaaaaaaaaaaaaaaaaaaa ",
         "                        ",
         "                        ",
         "                        ",
@@ -86,105 +84,108 @@ const LEVELS = [
         "                        ",
         "                        ",
         "                        ",
-        "                        ",
-        "bbbbbbbbbbbbbbbbbbbbbbbb",
     ],
     [
-        "aaaaaaaaaaaaaaaaaaaaaaa ",
-        " a                    a ",
-        " a  bbbbbbbbbbbbbbbbb a ",
-        " a  b              b  a ",
-        " a  b     cccccc   b  a ",
-        " a  b  ccddddddcc  b  a ",
-        " a  b     cccccc   b  a ",
-        " a  b              b  a ",
-        " a  bbbbbbbbbbbbbbbbb a ",
-        " a                    a ",
-        "aaaaaaaaaaaaaaaaaaaaaaa ",
-        "a                       ",
-        "a                       ",
-        "a                       ",
-        "a                       ",
-        "a                      a",
-        "a                      a",
-        "a                      a",
-        "a                      a",
-        "a                      a",
-        "bbbbbbbbbbbbbbbbbbbbbbbb",
+        "                        ",
+        "          a a           ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
+        "                        ",
     ],
+
 ]
 
-
-
 const LEVELOPT = {
-    width: 32,
-    height: 16,
-    "a": () => [ //block
-        sprite("blocka"),
+    width: 35,
+    height: 30,
+    shot_speed: 200,
+    "a": () => [
+        sprite("monstera"),
         area(),
-        solid(),
-        "block",
-        "blocka",
+        "monster",
         "bouncy",
+        patrol(50),
         {
-            points: 1
+            points: 1,
+            hp: 1,
+            monster_damage: 10,
+            laser_cooldown: 1.5,
+            laser_speed: -300,
+            can_shoot: true,
         }
     ],
     "b": () => [
-        sprite("blockb"),
+        sprite("monsterb"),
         area(),
-        solid(),
-        "block",
+        "monster",
         "bouncy",
+        patrol(50),
         {
-            points: 2
+            points: 2,
+            hp: 2,
+            monster_damage: 18,
+            laser_cooldown: 2.5,
+            laser_speed: -300,
+            can_shoot: true,
         }
     ],
     "c": () => [
-        sprite("blockc"),
+        sprite("monsterc"),
         area(),
-        "block",
+        "monster",
         "bouncy",
+        patrol(50),
         {
-            points: 4
+            points: 4,
+            hp: 5,
+            monster_damage: 20,
+            laser_cooldown: 3.5,
+            laser_speed: -300,
+            can_shoot: true,
         }
     ],
-    "d": () => [
-        sprite("blockd"),
-        area(),
-        "block",
-        "bouncy",
-        {
-            points: 8
-        }
-    ],
-    ".": () => [
-        sprite("ball"),
-        area(),
-        origin("center"),
-        "ball",
-        {
-            hspeed: 100,
-            vspeed: 50
-        }
-    ],
-
 }
 
-scene("game", ({ levelIndex, score, lives}) => {
+scene("start", () => {
+    add([
+        text("Press space to start", { size: 24 }),
+        pos(vec2(width()/2, height()/3)),
+        origin("center"),
+    ]);
+
+    onKeyRelease("space", () => {
+        go("game", {
+            levelIndex: 0,
+        });
+    })
+});
+
+scene("game", ({ levelIndex}) => {
     addLevel(LEVELS[levelIndex], LEVELOPT);
+    let score = 0;
+    let lives = 3;
 
     const player = add([
-        sprite("paddle"),
-        pos(200, 200),
-        body(),
+        sprite("ship"),
+        pos(width()/2, height()-20),
         area(),
-        scale(1),
+        scale(1.3),
         origin("center"),
         "player",
         {
-            score: 0,
-            shield: 100,
+            hp: 100,
+            player_damage: 1,
             laser_cooldown: 0.5,
             laser_speed: -300,
             can_shoot: true,
@@ -194,22 +195,23 @@ scene("game", ({ levelIndex, score, lives}) => {
 
 
     onKeyDown("left", () => {
-        if (toScreen(player.pos).x > 35) {
+        if (toScreen(player.pos).x > 20) {
             player.move(-player.move_speed, 0);
         }
     });
 
     onKeyDown("right", () => {
-        if (toScreen(player.pos).x < 735) {
+        if (toScreen(player.pos).x < width()-20) {
             player.move(player.move_speed, 0);
         }
     });
 
 
     onKeyDown("space", () => {
-        if (player.can_shoot) { // new if statement
+        if (player.can_shoot) {
+            player.can_shoot = false; //
             add([
-                sprite("ball"),
+                sprite("bulletb"),
                 pos(player.pos),
                 origin("center"),
                 area(),
@@ -220,7 +222,6 @@ scene("game", ({ levelIndex, score, lives}) => {
                     speed: 100
                 }
             ]);
-            player.can_shoot = false; //
             wait(player.laser_cooldown, () => {
                 player.can_shoot = true;
             });
@@ -233,53 +234,164 @@ scene("game", ({ levelIndex, score, lives}) => {
             destroy(b);
         }
     });
-    let dir = 100;
-    onUpdate("blocka", (b) => {
-       if (b.pos.x < 50) {
-           dir = 100;
+
+    onUpdate("monster", (m) => {
+        if (m.can_shoot) {
+            m.can_shoot = false;
+            wait(rand(5,30), () => {
+                add([
+                    sprite("bulleta"),
+                    pos(m.pos),
+                    origin("center"),
+                    area(),
+                    "monster_bullet",
+                    {
+                        damage: m.monster_damage
+                    }
+                ]);
+                m.can_shoot = true;
+            })
         }
-       else if (b.pos.x > 753) {
-           dir = -100;
-       }
-        b.move(dir, 0);
     });
 
-
+    onUpdate("monster_bullet", (b) => {
+        b.move(0, LEVELOPT.shot_speed);
+        if (b.pos.y > height() - 10) {
+            destroy(b);
+        }
+    });
 
     //collisions
-    onCollide("bullet", "block", (bullet, block) => {
-        block.destroy();
+    onCollide("bullet", "monster", (bullet, monster) => {
+        monster.hp -= player.player_damage
+        if (monster.hp <=0) {
+            monster.destroy();
+            score += monster.points
+        }
         bullet.destroy();
-        score += block.points
+        // level end -- NEW CODE BELOW
+        if (get("monster").length === 0 && levelIndex < LEVELS.length) { // next level
+                go("game", {
+                    levelIndex: levelIndex+1,
+                    score: score,
+                    lives: lives
+                });
+        }
     });
+
+    onCollide("monster_bullet", "player", (b, p) => {
+        p.hp -= b.damage;
+        shake(4);
+        if (lives <= 0 ) {
+        go("gameover", score);
+        }
+        else if (p.hp <= 0) {
+            lives--;
+            p.hp = 100;
+            shake(30);
+        }
+    })
 
     // ui
     onDraw(() => {
         drawText({
-            text: `SCORE: ${score}`,
+            text: `SCORE: ${levelIndex}`,
             size: 16,
             pos: vec2(8,8),
             font: "breakout",
+        });
 
+        drawText({
+            text: `HEALTH:${player.hp}`,
+            size: 12,
+            pos: vec2(width()*14/16, 4),
+            font: "breakout",
+        });
+
+        drawText({
+            text: `LIVES:${lives}`,
+            size: 12,
+            pos: vec2(width()*14/16, 18),
+            font: "breakout",
+        });
+
+        drawText({
+            text: `DMG:${player.player_damage}`,
+            size: 10,
+            pos: vec2(width()*9/16, 4),
+            font: "breakout",
         });
         drawText({
-            text: `LIVES: ${lives}`,
-            size: 16,
-            pos: vec2(width()*13/16, 8),
+            text: `ATTACK SPEED:${player.laser_cooldown}`,
+            size: 10,
+            pos: vec2(width()*9/16, 16),
             font: "breakout",
-
         });
+
+
     });
 });
 
-
-// start game on first level
-function start() {
-    go("game", {
-        levelIndex: 0,
-        score: 0,
-        lives: 3,
-    });
+function patrol(distance = 100, speed = 50, dir = 1) {
+    return {
+        id: "patrol",
+        require: ["pos", "area",],
+        startingPos: vec2(0, 0),
+        add() {
+            this.startingPos = this.pos;
+            this.on("collide", (obj, side) => {
+                if (side === "left" || side === "right") {
+                    dir = -dir;
+                }
+            });
+        },
+        update() {
+            if (Math.abs(this.pos.x - this.startingPos.x) >= distance || this.pos.x > width()-20 || this.pos.x < 0) {
+                dir = -dir;
+            }
+            this.move(speed * dir, 0);
+        },
+    };
 }
 
-start();
+scene("win", () => {
+
+
+    add([
+        text(
+            `GAME OVER\n\nFINAL SCORE: ${score} \n current highscore: \n\nPress space to start new game`,
+            { size: 24 }),
+        pos(vec2(width()/2, height()/2)),
+        origin("center"),
+    ]);
+
+    onKeyRelease("space", () => {
+        go("game", {
+            levelIndex: 0,
+        });
+    })
+
+});
+
+
+scene("gameover", (score) => {
+
+    if (score > highscore) {
+        highscore = score;
+    }
+    add([
+        text(
+            `GAME OVER\n\nFINAL SCORE: ${score} \n current highscore: ${highscore}\n\nPress space to start new game`,
+            { size: 24 }),
+        pos(vec2(width()/2, height()/2)),
+        origin("center"),
+    ]);
+
+    onKeyRelease("space", () => {
+        go("game", {
+            levelIndex: 0,
+        });
+    })
+});
+
+go("start");
