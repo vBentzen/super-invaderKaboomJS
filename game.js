@@ -271,11 +271,11 @@ scene("game", ({ levelIndex}) => {
         bullet.destroy();
         // level end -- NEW CODE BELOW
         if (get("monster").length === 0 && levelIndex < LEVELS.length) { // next level
-                go("game", {
-                    levelIndex: levelIndex+1,
-                    score: score,
-                    lives: lives
-                });
+            go("game", {
+                levelIndex: levelIndex+1,
+                score: score,
+                lives: lives
+            });
         }
     });
 
@@ -283,7 +283,7 @@ scene("game", ({ levelIndex}) => {
         p.hp -= b.damage;
         shake(4);
         if (lives <= 0 ) {
-        go("gameover", score);
+            go("gameover", score);
         }
         else if (p.hp <= 0) {
             lives--;
